@@ -7,25 +7,27 @@ namespace CarnotaurusV2{
     namespace Program_Manager{
         class Module_Intercommunication{
             private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-            private ConcurrentBag<Queue> q_list = new ConcurrentBag<Queue>();
+            private ConcurrentDictionary<Queue,Queue> q_dict = new ConcurrentDictionary<Queue,Queue>();
             private Thread t;
             public Module_Intercommunication(){
                 logger.Info("Creating communication handler thread.");
-                t = new Thread(Module_Communicaton_Handler);
+                t = new Thread(Module_Communicaton_HandlerRecv);
                 t.Start();
                 logger.Info("Done creating communication handler thread.");
             }
 
-            public void AddBus(Queue new_bus){
-                q_list.Add(Queue.Synchronized(new_bus));
+            public void AddBus(Queue new_busrecv, Queue new_bussend){
+                if(q_dict.TryAdd(new_busrecv, new_bussend) is false){
+                    logger.Warn("Couldn't add queue because it already existed.");
+                }
             }
 
             public void Shutdown(){
                 t.Abort();
             }
-            private void Module_Communicaton_Handler(){
+            private void Module_Communicaton_HandlerRecv(){
                 while(true){
-                    foreach(Queue i in q_list){
+                    foreach(Queue i in q_dict.Keys){
                         if (i.Count == 0){
                             continue;
                         }
