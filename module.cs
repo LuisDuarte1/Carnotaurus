@@ -14,7 +14,7 @@ namespace CarnotaurusV2{
         private List<Thread> t_list = new List<Thread>(); // Every persistent Thread must be added to this list to be shutdowned
         public Module(Queue _recv, Queue _send){
             recv = _recv;
-            _send = send;
+            send = _send;
         }
 
         public bool GetStatus(){
