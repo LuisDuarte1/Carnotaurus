@@ -31,17 +31,19 @@ namespace CarnotaurusV2{
             public void AddModule(string class_path, object[] _args){ //Args respresent addition arguments
                 Queue m1 = new Queue();
                 Queue m2 = new Queue();
-                object[] _args1 = new object[2] {m1,m2};
-                object[] args = new object[_args.Length + _args1.Length];
-                Array.Copy(_args1, args, _args1.Length);
-                Array.Copy(_args, args, _args1.Length);
+                List<object> a = new List<object>();
+                a.Add(m1);
+                a.Add(m2);
+                foreach(object i in _args){
+                    a.Add(i);
+                }
                 var classtype = Type.GetType(class_path);
                 if (classtype.IsSubclassOf(typeof(Module)) is false){ // check if is a subclass of module
                     logger.Warn(String.Format(
                         "Could not add {0} because it dosen't derive from Module", classtype));
                     return;
-                } 
-                dynamic c = Activator.CreateInstance(classtype, args); //Initialize the module
+                }
+                dynamic c = Activator.CreateInstance(classtype, a.ToArray()); //Initialize the module
                 m.AddBus(m1, m2);
                 m_list.Add(c);
 
