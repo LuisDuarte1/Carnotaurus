@@ -9,9 +9,11 @@ namespace CarnotaurusV2{
             private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
             private ConcurrentDictionary<Queue,Queue> q_dict = new ConcurrentDictionary<Queue,Queue>();
             private Thread t;
-            public Module_Intercommunication(){
+            private int interval;
+            public Module_Intercommunication(int _interval = 5){
                 logger.Info("Creating communication handler thread.");
                 t = new Thread(Module_Communicaton_HandlerRecv);
+                interval = _interval;
                 t.Start();
                 logger.Info("Done creating communication handler thread.");
             }
@@ -35,6 +37,7 @@ namespace CarnotaurusV2{
                             logger.Debug(q);
                         
                     }
+                    Thread.Sleep(interval);
                 }
             }
         }
