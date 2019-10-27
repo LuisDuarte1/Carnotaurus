@@ -7,11 +7,11 @@ using System.Collections.Generic;
 namespace CarnotaurusV2{
     class Module{ //Every module must inherit this class for health_checking and other features
 
-        private Queue recv;
-        private Queue send;
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        protected Queue recv;
+        protected Queue send;
+        protected static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private List<Thread> t_list = new List<Thread>(); // Every persistent Thread must be added to this list to be shutdowned
+        protected List<Thread> t_list = new List<Thread>(); // Every persistent Thread must be added to this list to be shutdowned
         public Module(Queue _recv, Queue _send){
             recv = _recv;
             send = _send;
