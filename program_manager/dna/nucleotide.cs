@@ -69,6 +69,13 @@ namespace CarnotaurusV2{
                 }
             
             }
+
+            class InvalidGeneticInformationException : Exception{
+                public InvalidGeneticInformationException() : base(String.Format("This nucleotide is not valid.")){
+
+                }
+                
+            }
         }
     }
 }
